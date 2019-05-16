@@ -1,11 +1,15 @@
-import * as express from 'express';
 
-const app = express();
+import 'dotenv/config';
+import App from './app';
+import ProductsController from './products/products.controller';
 
-app.get('/', (request, response) => {
-    response.send('Hello Katalum');
-});
+import validateEnv from './utils/validateEnv';
+validateEnv();
 
-app.listen(3000);
+const app = new App(
+    [
+        new ProductsController(),
+    ],
+);
 
-
+app.listen();
