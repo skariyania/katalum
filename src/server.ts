@@ -1,0 +1,11 @@
+import * as express from 'express';
+
+const app = express();
+
+app.get('/', (request, response) => {
+    response.send('Hello Katalum');
+});
+
+app.listen(3000);
+
+

@@ -1,0 +1,24 @@
+{
+  "name": "katalum",
+  "version": "0.0.1",
+  "description": "Katalum is kickstarter using node, express, mongoDB for with sample product & categories api",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node ./src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "express",
+    "typescript",
+    "product",
+    "categories",
+    "api"
+  ],
+  "author": "Sahil Kariyania",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "ts-node": "^8.1.0",
+    "typescript": "^3.4.5"
+  }
+}
