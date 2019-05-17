@@ -35,7 +35,7 @@ class App {
         const {
           MONGO_PATH,
         } = process.env;
-        mongoose.connect(`mongodb://${MONGO_PATH}`, { useNewUrlParser: true });
+        mongoose.connect(`mongodb://${MONGO_PATH}`, { "useNewUrlParser": true, "useFindAndModify": false });
     }
 
     private initializeErrorHandling() {

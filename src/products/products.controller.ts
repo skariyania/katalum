@@ -52,7 +52,7 @@ class ProductsController implements Controller {
   modifyProduct = (request: express.Request, response: express.Response, next: express.NextFunction) => {
     const id = request.params.id;
     const productData: Product = request.body;
-    productModel.findByIdAndUpdate(id, productData, { "new": true, "useFindAndModify": false }).then((product) => {
+    productModel.findByIdAndUpdate(id, productData, { "new": true }).then((product) => {
       if(product) {
         response.send(product);
       } else {
@@ -63,7 +63,7 @@ class ProductsController implements Controller {
 
   removeProduct = (request: express.Request, response: express.Response, next: express.NextFunction) => {
     const id = request.params.id;
-    productModel.findByIdAndRemove(id, { "useFindAndModify": false }).then((ack) => {
+    productModel.findByIdAndRemove(id).then((ack) => {
       if(ack) {
         response.sendStatus(200);
       } else {
