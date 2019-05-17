@@ -4,6 +4,8 @@ import productModel from './products.model';
 import { request } from 'http';
 import Controller from 'interfaces/controller.interface';
 import ProductNotFoundExcetion from 'exceptions/ProductNotFoundException';
+import validationMiddleware from 'middleware/validation.middleware';
+import CreateProductDto from './product.dto';
 
 class ProductsController implements Controller {
   public path = '/products';
@@ -15,9 +17,9 @@ class ProductsController implements Controller {
  
   public intializeRoutes() {
     this.router.get(this.path, this.getAllProducts);
-    this.router.post(this.path, this.createProduct);
+    this.router.post(this.path, validationMiddleware(CreateProductDto), this.createProduct);
     this.router.get(`${this.path}/:id`, this.getProductById);
-    this.router.patch(`${this.path}/:id`, this.modifyProduct);
+    this.router.patch(`${this.path}/:id`, validationMiddleware(CreateProductDto), this.modifyProduct);
     this.router.delete(`${this.path}/:id`, this.removeProduct);
   }
  
