@@ -3,6 +3,7 @@ import Product from './product.interface';
 import productModel from './products.model'; 
 import { request } from 'http';
 import Controller from 'interfaces/controller.interface';
+import ProductNotFoundExcetion from 'exceptions/ProductNotFoundException';
 
 class ProductsController implements Controller {
   public path = '/products';
@@ -43,7 +44,7 @@ class ProductsController implements Controller {
       if(product) {
         response.send(product);
       } else {
-        next('Product not found');
+        next(new ProductNotFoundExcetion(id));
       }
     }).catch(next); //passing errors to express's error handler
   }
@@ -52,7 +53,11 @@ class ProductsController implements Controller {
     const id = request.params.id;
     const productData: Product = request.body;
     productModel.findByIdAndUpdate(id, productData, { "new": true, "useFindAndModify": false }).then((product) => {
-      response.send(product)
+      if(product) {
+        response.send(product);
+      } else {
+        next(new ProductNotFoundExcetion(id));
+      }
     }).catch(next); //passing errors to express's error handler
   }
 
@@ -62,7 +67,7 @@ class ProductsController implements Controller {
       if(ack) {
         response.sendStatus(200);
       } else {
-        next('Product not found');
+        next(new ProductNotFoundExcetion(id));
       }
     }).catch(next); //passing errors to express's error handler
   }
