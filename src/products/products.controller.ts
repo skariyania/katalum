@@ -3,8 +3,8 @@ import Product from './product.interface';
 import productModel from './products.model'; 
 import { request } from 'http';
 import Controller from 'interfaces/controller.interface';
-import ProductNotFoundExcetion from 'exceptions/ProductNotFoundException';
-import validationMiddleware from 'middleware/validation.middleware';
+import ProductNotFoundExcetion from '../exceptions/ProductNotFoundException';
+import validationMiddleware from '../middleware/validation.middleware';
 import CreateProductDto from './product.dto';
 
 class ProductsController implements Controller {
