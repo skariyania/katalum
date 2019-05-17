@@ -27,7 +27,7 @@ class ProductsController implements Controller {
     });
   }
  
-  createProduct = (request: express.Request, response: express.Response, next: express.Next) => {
+  createProduct = (request: express.Request, response: express.Response, next: express.NextFunction) => {
     const productData: Product = request.body;
     const createProduct = new productModel(productData); 
     createProduct.save()
@@ -36,15 +36,19 @@ class ProductsController implements Controller {
       }).catch(next); //passing errors to express's error handler
   }
 
-  getProductById = (request: express.Request, response: express.Response, next: express.Next) => {
+  getProductById = (request: express.Request, response: express.Response, next: express.NextFunction) => {
     const id = request.params.id;
     productModel.findById(id)
     .then((product) => {
-      response.send(product)
+      if(product) {
+        response.send(product);
+      } else {
+        next('Product not found');
+      }
     }).catch(next); //passing errors to express's error handler
   }
 
-  modifyProduct = (request: express.Request, response: express.Response, next: express.Next) => {
+  modifyProduct = (request: express.Request, response: express.Response, next: express.NextFunction) => {
     const id = request.params.id;
     const productData: Product = request.body;
     productModel.findByIdAndUpdate(id, productData, { "new": true, "useFindAndModify": false }).then((product) => {
@@ -52,13 +56,13 @@ class ProductsController implements Controller {
     }).catch(next); //passing errors to express's error handler
   }
 
-  removeProduct = (request: express.request, response: express.response, next: express.Next) => {
+  removeProduct = (request: express.Request, response: express.Response, next: express.NextFunction) => {
     const id = request.params.id;
     productModel.findByIdAndRemove(id, { "useFindAndModify": false }).then((ack) => {
       if(ack) {
         response.sendStatus(200);
       } else {
-        response.sendStatus(404);
+        next('Product not found');
       }
     }).catch(next); //passing errors to express's error handler
   }
