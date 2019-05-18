@@ -3,6 +3,8 @@ import Product from './product.interface';
 
 const productSchema = new mongoose.Schema({
     name: String,
+    categories: [String],
+    price: Number
 });
 
 const productModel = mongoose.model<Product & mongoose.Document>('Product', productSchema);

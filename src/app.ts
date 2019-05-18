@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as mongoose from 'mongoose';
+import errorMiddleware from './middleware/error.middleware';
 
 class App {
     public app: express.Application;
@@ -11,6 +12,7 @@ class App {
         this.connectToTheDatabase();
         this.initializeMiddlewares();
         this.initializeControllers(controllers);
+        this.initializeErrorHandling();
     }
 
     private initializeMiddlewares() {
@@ -33,7 +35,11 @@ class App {
         const {
           MONGO_PATH,
         } = process.env;
-        mongoose.connect(`mongodb://${MONGO_PATH}`, { useNewUrlParser: true });
-      }
+        mongoose.connect(`mongodb://${MONGO_PATH}`, { "useNewUrlParser": true, "useFindAndModify": false });
+    }
+
+    private initializeErrorHandling() {
+        this.app.use(errorMiddleware);
+    }
 }
 export default App;
