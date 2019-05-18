@@ -8,6 +8,8 @@ import CategoryExistException from '../exceptions/CategoryExistException';
 import CategoryNotFoundExcetion from '../exceptions/CategoryNotFoundException';
 import ParentCategoryNotExistException from '../exceptions/ParentCategoryNotExistException';
 
+import aggregations from './category.aggregations';
+
 import CreateCategoryDto from './category.dto';
 
 
@@ -21,19 +23,25 @@ class CategoriesController implements Controller {
  
   public intializeRoutes() {
     this.router.get(this.path, this.getAllCategories);
+    this.router.get(`${this.path}/:id`, this.getCategoryById);
     this.router.post(this.path,
-                      validationMiddleware(CreateCategoryDto), 
+                      validationMiddleware(CreateCategoryDto),
+                      this._generateCategoryPath,
                       this.categoryNameValidator,
                       this.parentCategoryVaidator,
                       this.createCategory
                     );
-    this.router.get(`${this.path}/:id`, this.getCategoryById);
-    this.router.patch(`${this.path}/:id`, validationMiddleware(CreateCategoryDto), this.modifyCategory);
+    this.router.patch(`${this.path}/:id`,
+                      validationMiddleware(CreateCategoryDto),
+                      this._generateCategoryPath,
+                      this.categoryNameValidator,
+                      this.parentCategoryVaidator,
+                      this.modifyCategory);
     this.router.delete(`${this.path}/:id`, this.removeCategory);
   }
  
   getAllCategories = (request: express.Request, response: express.Response) => {
-    categoryModel.find()
+    categoryModel.aggregate(aggregations.materializedCategory)
     .then(categories => {
       response.send(categories);
     });
@@ -83,12 +91,18 @@ class CategoriesController implements Controller {
     }).catch(next); //passing errors to express's error handler
   }
 
+  private _generateCategoryPath = (request: express.Request, response: express.Response, next: express.NextFunction) => {
+    const categoryData: Category = request.body;
+    categoryData.category = `${categoryData.parent}${categoryData.category}`;
+    next();
+  }
+
   private parentCategoryVaidator = (request: express.Request, response: express.Response, next: express.NextFunction) => {
     const categoryData: Category = request.body;
     if(categoryData.parent === "/") {
       return next();
     }
-    const parentRegex = new RegExp(`^${categoryData.parent}/`, "g");
+    const parentRegex = new RegExp(`^${categoryData.parent}`);
     categoryModel.countDocuments({'category': parentRegex })
       .then(count => {
         if(count == 0) {
