@@ -1,7 +1,6 @@
 import * as express from 'express';
 import Product from './product.interface';
-import productModel from './products.model'; 
-import { request } from 'http';
+import productModel from './products.model';
 import Controller from 'interfaces/controller.interface';
 import ProductNotFoundExcetion from '../exceptions/ProductNotFoundException';
 import validationMiddleware from '../middleware/validation.middleware';
