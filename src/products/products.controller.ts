@@ -5,6 +5,7 @@ import Controller from 'interfaces/controller.interface';
 import ProductNotFoundExcetion from '../exceptions/ProductNotFoundException';
 import validationMiddleware from '../middleware/validation.middleware';
 import CreateProductDto from './product.dto';
+import { stringify } from 'querystring';
 
 class ProductsController implements Controller {
   public path = '/products';
@@ -23,7 +24,7 @@ class ProductsController implements Controller {
   }
  
   getAllProducts = (request: express.Request, response: express.Response) => {
-    productModel.find(request.query)
+    productModel.find(request.query, {'_id': true, 'name': 1, 'categories': 1, 'price': 1 })
     .then(products => {
       response.send(products);
     });
