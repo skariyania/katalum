@@ -1,6 +1,4 @@
 import { IsString, IsNumber, IsArray } from 'class-validator';
-import { isArray } from 'util';
-import { plugin } from 'mongoose';
 
 class CreateProductDto {
     @IsString()

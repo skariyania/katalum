@@ -5,7 +5,6 @@ import Controller from 'interfaces/controller.interface';
 import ProductNotFoundExcetion from '../exceptions/ProductNotFoundException';
 import validationMiddleware from '../middleware/validation.middleware';
 import CreateProductDto from './product.dto';
-import { stringify } from 'querystring';
 
 class ProductsController implements Controller {
   public path = '/products';
