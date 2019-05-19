@@ -23,7 +23,7 @@ class ProductsController implements Controller {
   }
  
   getAllProducts = (request: express.Request, response: express.Response) => {
-    productModel.find()
+    productModel.find(request.query)
     .then(products => {
       response.send(products);
     });
