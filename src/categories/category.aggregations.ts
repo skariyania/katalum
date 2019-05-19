@@ -23,7 +23,11 @@ const materializedCategory = [
         }
     },
     {
-        $unwind: "$categories"
+        $unwind: {
+            "path": "$categories",
+            "preserveNullAndEmptyArrays": true
+            
+        }
     },
     {
         $sort: { "categories.level": -1 }
