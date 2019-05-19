@@ -93,7 +93,9 @@ class CategoriesController implements Controller {
 
   private _generateCategoryPath = (request: express.Request, response: express.Response, next: express.NextFunction) => {
     const categoryData: Category = request.body;
-    categoryData.category = `${categoryData.parent}${categoryData.category}`;
+    if(categoryData.parent !== '/') {
+      categoryData.category = `${categoryData.parent}${categoryData.category}`;
+    }
     next();
   }
 

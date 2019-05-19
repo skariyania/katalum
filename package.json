@@ -1,6 +1,6 @@
 {
   "name": "katalum",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Katalum is kickstarter using node, express, mongoDB for with sample product & categories api",
   "main": "index.js",
   "scripts": {
